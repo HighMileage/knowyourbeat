@@ -1,4 +1,4 @@
 knowyourbeat
 ============
 
-An interactive beat map of Chicago, IL
+An interactive beat map of Chicago, IL.
