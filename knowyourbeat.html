@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Know Your Beat: Community Policing in Chicago</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+	<link rel="stylesheet" href="http://leaflet.github.io/Leaflet.label/leaflet.label.css" />
+
+	<script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+	<script src="http://leaflet.github.io/Leaflet.label/leaflet.label.js"></script>
+	<script type="text/javascript" src="http://curiouschi.com/data/cpddistrictsfinalpline.js"></script>
+	<script type="text/javascript" src="http://curiouschi.com/data/beats.js"></script>
+
+	<style>
+		body {
+			padding: 0;
+			margin: 0;
+		}
+		html, body, #map {
+			height: 100%;
+		}
+	</style>
+</head>
+<body>
+	<div id="map"></div>
+
+	<script>
+		var map = L.map('map').setView([41.878, -87.657], 14);
+		//Storing layers that we'll later pull data out of.
+		var allBlayer = []
+		var allDlayer =[]
+		//Keeping track of labels to selectively turn them on and off. 
+		var allBeatLabels =[]
+		var allDisLabels =[]
+
+		L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
+			maxZoom: 16,
+			attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+				'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+				'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+			id: 'examples.map-20v6611k'
+		}).addTo(map);
+
+		//Feature handler can deal with both district and 		
+		function onEachFeature(feature, layer) {
+			//Is the feature a beat?
+			if (feature.properties && feature.properties.Beat) {
+					layer.bindPopup(feature.properties.description + '<a href="http://capsure.opencityapps.org/district/'+feature.properties.District+'">'+'Attend This Beat Meeting'+'</a>');
+					allBlayer.push(layer);			
+			}
+			//Is the feature a district? Popups are not created but could be here.
+			else if (feature.properties && feature.properties.distname){
+						allDlayer.push(layer);				
+			}
+		}
+
+		//Color scheme for 22 districts.
+		function getColor(d) {
+			return	d == 1  ? '#FF0040' :
+						d == 2  ? '#FF00FF' :
+				   	d == 3  ? '#0000FF' :
+				   	d == 4  ? '#0B0B61' :
+				   	d == 5  ? '#00FF40' :
+				   	d == 6  ? '#80FF00' :
+				   	d == 7  ? '#0B615E' :
+						d == 8  ? '#4C0B5F' :
+				   	d == 9  ? '#0B6121' :
+				   	d == 10  ? '#E31A1C' :
+				   	d == 11  ? '#610B4B' :
+				   	d == 12  ? '#FF8000' :
+						d == 14  ? '#00FFFF' :
+						d == 15  ? '#21610B' :
+				   	d == 16  ? '#FF0000' :
+				   	d == 17  ? '#FFFF00' :
+						d == 18  ? '#5E610B' :
+				   	d == 19  ? '#61380B' :
+						d == 20  ? '#800026' :
+						d == 21  ? '#BD0026' :
+				   	d == 22  ? '#E31A1C' :
+				   	d == 24  ? '#E31A1C' :
+						d == 25  ? '#FFEDA0' :
+										'#610B21';
+
+		}
+
+		function dStyle(feature) {
+			 return {
+				  color: '#F2F2F2	',
+				  weight: 3.5,
+				  opacity: 1,
+				  dashArray: '4,9',
+				  fillOpacity: 0
+			 };
+		}
+		
+		//Useful before dynamically styling based on district number.
+		var BeatStyle = {
+			color: "#151515",
+			weight: 2.5,
+			opacity: 0.55,
+			fillColor: "#008eff",
+			fillOpacity: 0.15
+		};
+
+		function bStyle(feature) { 
+			return {
+				color: "#585858",
+				weight: 2.5,
+				opacity: 0.55,
+				fillColor: getColor(feature.properties.District),
+				fillOpacity: 0.30
+			};
+		}
+		
+		//Load the beats up.
+		L.geoJson(beats, {
+			style: bStyle,
+			onEachFeature: onEachFeature		
+		}).addTo(map);
+
+		//Load the districts up.
+		L.geoJson(districts, {
+			style: dStyle,
+			onEachFeature: onEachFeature
+		}).addTo(map); 
+
+		//This would be useful to turn on if hover over seemed more aesthetically appealing than all the beat labels.
+//		for(layer in allBlayer){
+//			var props = allBlayer[layer].feature.properties;
+//			allBlayer[layer].bindLabel( '<h1>' + "Beat " + props["Beat Number"] + '</h1>');
+//		}
+		
+		//
+		for(layer in allBlayer){
+			var feat = allBlayer[layer].feature;
+			var tempPoly = L.polygon(feat.geometry.coordinates);
+			var label = new L.Label({opacity:0.9, offset:[-20,-15]});						
+			label.setContent(feat.properties['Beat Number']);
+			label.setLatLng([tempPoly.getBounds().getCenter().lng,tempPoly.getBounds().getCenter().lat]);
+			label.updateZIndex(-10);
+			allBeatLabels.push(label);
+			map.showLabel(label);
+		}
+
+		//Creating all of the lables for districts and intializing to zero opactiy to make invisible until 1st zoom change. 
+		for(layer in allDlayer){
+			var feat = allDlayer[layer].feature;
+			var tempPoline = L.multiPolyline(feat.geometry.coordinates);
+			var label = new L.Label({opacity:0, offset:[10,-15]});						
+			label.setContent('District '+feat.properties.distname);
+			label.setLatLng([tempPoline.getBounds().getCenter().lng,tempPoline.getBounds().getCenter().lat]);
+			label.updateZIndex(-5);
+			allDisLabels.push(label);
+			map.showLabel(label);
+		}
+
+
+		//Rules to show and hide labels based on zoom.
+		map.on('zoomend', function () {
+		//Drop the district labels if we're zoomed in close.		
+		if (map.getZoom() >= 13) {
+			for(label in allBeatLabels){
+				allBeatLabels[label].setOpacity(1)
+			}
+			for(label in allDisLabels){
+				allDisLabels[label].setOpacity(0)
+			}
+		}
+		//Turn on the district labels to appreciate the different districts.		
+		else if (map.getZoom() < 10) {
+			for(label in allDisLabels){
+				allDisLabels[label].setOpacity(0)
+			}
+		}
+		//Drop all labels we're too far out anyways.		
+		else if (map.getZoom() < 13) {
+			for(label in allBeatLabels){
+				allBeatLabels[label].setOpacity(0)
+			}
+			for(label in allDisLabels){
+				allDisLabels[label].setOpacity(1)
+			}
+		}				 
+		});
+
+		function onLocationFound(e) {
+			//Bounds very broadly cover Chicago
+			var bounds = L.latLngBounds([
+				 [41.562, -88.050],
+				 [42.204, -87.437]
+			]);
+			if (bounds.contains(e.latlng)) {
+				var radius = e.accuracy / 2;
+				L.marker(e.latlng).addTo(map)
+					.bindPopup("This is you!").openPopup();
+				L.circle(e.latlng, radius).addTo(map);
+				map.setView(e.latlng)				
+			}
+		}
+
+		function onLocationError(e) {
+			alert(e.message);
+		}
+
+		map.on('locationfound', onLocationFound);
+		map.on('locationerror', onLocationError);
+
+		map.locate({setView: false, maxZoom: 16});
+	</script>
+</body>
+</html>
