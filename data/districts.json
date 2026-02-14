@@ -1,0 +1,112 @@
+[
+  {
+    "id": 1,
+    "url": "https://www.chicagopolice.org/1st-district-central",
+    "name": "Central"
+  },
+  {
+    "id": 2,
+    "url": "https://www.chicagopolice.org/2nd-district-wentworth",
+    "name": "Wentworth"
+  },
+  {
+    "id": 3,
+    "url": "https://www.chicagopolice.org/3rd-district-grand-crossing",
+    "name": "Grand Crossing"
+  },
+  {
+    "id": 4,
+    "url": "https://www.chicagopolice.org/4th-district-south-chicago",
+    "name": "South Chicago"
+  },
+  {
+    "id": 5,
+    "url": "https://www.chicagopolice.org/5th-district-calumet",
+    "name": "Calumet"
+  },
+  {
+    "id": 6,
+    "url": "https://www.chicagopolice.org/6th-district-gresham",
+    "name": "Gresham"
+  },
+  {
+    "id": 7,
+    "url": "https://www.chicagopolice.org/7th-district-englewood",
+    "name": "Englewood"
+  },
+  {
+    "id": 8,
+    "url": "https://www.chicagopolice.org/8th-district-chicago-lawn",
+    "name": "Chicago Lawn"
+  },
+  {
+    "id": 9,
+    "url": "https://www.chicagopolice.org/9th-district-deering",
+    "name": "Deering"
+  },
+  {
+    "id": 10,
+    "url": "https://www.chicagopolice.org/10th-district-ogden",
+    "name": "Ogden"
+  },
+  {
+    "id": 11,
+    "url": "https://www.chicagopolice.org/11th-district-harrison/",
+    "name": "Harrison"
+  },
+  {
+    "id": 12,
+    "url": "https://www.chicagopolice.org/12th-district-near-west",
+    "name": "Near West"
+  },
+  {
+    "id": 14,
+    "url": "https://www.chicagopolice.org/14th-district-shakespeare",
+    "name": "Shakespeare"
+  },
+  {
+    "id": 15,
+    "url": "https://www.chicagopolice.org/15th-district-austin",
+    "name": "Austin"
+  },
+  {
+    "id": 16,
+    "url": "https://www.chicagopolice.org/16th-district-jefferson-park",
+    "name": "Jefferson Park"
+  },
+  {
+    "id": 17,
+    "url": "https://www.chicagopolice.org/17th-district-albany-park",
+    "name": "Albany Park"
+  },
+  {
+    "id": 18,
+    "url": "https://www.chicagopolice.org/18th-district-near-north",
+    "name": "Near North"
+  },
+  {
+    "id": 19,
+    "url": "https://www.chicagopolice.org/19th-district-town-hall",
+    "name": "Town Hall"
+  },
+  {
+    "id": 20,
+    "url": "https://www.chicagopolice.org/20th-district-lincoln",
+    "name": "Lincoln"
+  },
+  {
+    "id": 22,
+    "url": "https://www.chicagopolice.org/22nd-district-morgan-park",
+    "name": "Morgan Park"
+  },
+  {
+    "id": 24,
+    "url": "https://www.chicagopolice.org/24th-district-rogers-park",
+    "name": "Rogers Park"
+  },
+  {
+    "id": 25,
+    "url": "https://www.chicagopolice.org/25th-district-grand-central",
+    "name": "Grand Central"
+  }
+]
